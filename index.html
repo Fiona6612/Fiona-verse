@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fionaverse ✨</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg-color-dark: #1a0f2b;
+        --bg-gradient-aurora: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      }
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--bg-color-dark);
+        color: #e0e0e0;
+      }
+      .aurora {
+        background: var(--bg-gradient-aurora);
+      }
+      .font-display {
+        font-family: 'Playfair Display', serif;
+      }
+      .holographic-btn {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+        border: 1px solid rgba(255,255,255,0.2);
+        transition: all 0.3s ease;
+      }
+      .holographic-btn:before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          to right, 
+          transparent, 
+          rgba(200, 150, 255, 0.5), 
+          transparent
+        );
+        transform: rotate(45deg);
+        transition: all 0.5s ease;
+        opacity: 0;
+      }
+      .holographic-btn:hover:before {
+        left: 100%;
+        opacity: 1;
+      }
+      .holographic-btn:hover {
+        box-shadow: 0 0 15px rgba(171, 71, 188, 0.6), 0 0 30px rgba(79, 195, 247, 0.4);
+      }
+      
+      /* New Styles for Editable Content and Animations */
+      @keyframes float-up {
+        0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+        25% { opacity: 0.7; }
+        75% { opacity: 0.7; }
+        100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+      }
+      
+      [contenteditable="true"]:hover {
+        outline: 2px dashed rgba(171, 71, 188, 0.6);
+        border-radius: 5px;
+      }
+      [contenteditable="true"]:focus {
+        outline: 2px solid rgba(79, 195, 247, 0.8);
+        background: rgba(255,255,255,0.05);
+      }
+
+      /* --- Family Tree Styles --- */
+      .family-tree-node {
+        text-align: center;
+      }
+      .family-tree-node img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        background-color: rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .family-tree-node:hover img {
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(171, 71, 188, 0.7);
+      }
+      .family-tree-me img {
+        width: 120px;
+        height: 120px;
+        border: 4px solid #ab47bc; /* Clean purple border */
+        box-shadow: 0 0 15px rgba(171, 71, 188, 0.5); /* Softer glow */
+      }
+      .family-tree-me:hover img {
+        transform: scale(1.05);
+        box-shadow: 0 0 25px rgba(171, 71, 188, 0.8);
+      }
+      
+      /* Modal Styles */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        animation: fade-in 0.3s ease;
+      }
+      .modal-content {
+        background: var(--bg-color-dark);
+        border: 1px solid rgba(255,255,255,0.2);
+        padding: 2rem;
+        border-radius: 1rem;
+        width: 90%;
+        max-width: 500px;
+        position: relative;
+        box-shadow: 0 0 30px rgba(171, 71, 188, 0.4);
+        animation: slide-up 0.3s ease;
+      }
+      .modal-close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+      @keyframes slide-up {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+
+       /* Lightbox Styles */
+      .lightbox-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1001;
+        cursor: pointer;
+        animation: fade-in 0.3s ease;
+      }
+      .lightbox-overlay img {
+        max-width: 90vw;
+        max-height: 90vh;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+      }
+
+      /* Scrollbar styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1a0f2b;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #4a1e6e;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #ab47bc;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
